@@ -68,11 +68,11 @@ def main():
         # Display pipeline progress
         progress = st.session_state.pipeline_progress
         
-        st.write("**Program 1**: BizTalk Mapper", get_status_icon(progress['program_1']['status']))
-        st.write("**Program 2**: ACE Foundation", get_status_icon(progress['program_2']['status']))
-        st.write("**Program 3**: LLM Enhancement", get_status_icon(progress['program_3']['status']))
-        st.write("**Program 4**: Quality Review", get_status_icon(progress['program_4']['status']))
-        st.write("**Program 5**: Functional Docs", get_status_icon(progress['program_5']['status']))  # NEW LINE ONLY
+        st.write("**Agent 1**: BizTalk Mapper", get_status_icon(progress['program_1']['status']))
+        st.write("**Agent 2**: ACE Migration", get_status_icon(progress['program_2']['status']))
+        st.write("**Agent 3**: ACE Modules", get_status_icon(progress['program_3']['status']))
+        st.write("**Agent 4**: Quality Review", get_status_icon(progress['program_4']['status']))
+        st.write("**Agent 5**: Postman Collection", get_status_icon(progress['program_5']['status']))  # NEW LINE ONLY
         
         # Reset pipeline button
         if st.button("🔄 Reset Pipeline"):
@@ -1848,23 +1848,23 @@ def render_results_dashboard():
     
     with col1:
         status = progress['program_1']['status']
-        st.metric("Program 1", "BizTalk Mapper", delta=status.title())
+        st.metric("Agent 1", "BizTalk Mapper", delta=status.title())
     
     with col2:
         status = progress['program_2']['status']
-        st.metric("Program 2", "ACE Foundation", delta=status.title())
+        st.metric("Agent 2", "ACE Foundation", delta=status.title())
     
     with col3:
         status = progress['program_3']['status']
-        st.metric("Program 3", "ACE Module Creator", delta=status.title())
+        st.metric("Agent 3", "ACE Module Creator", delta=status.title())
     
     with col4:
         status = progress['program_4']['status']
-        st.metric("Program 4", "Quality Review", delta=status.title())
+        st.metric("Agent 4", "Quality Review", delta=status.title())
     
     with col5:  # NEW COLUMN FOR PROGRAM 5
         status = progress['program_5']['status']
-        st.metric("Program 5", "Functional Docs", delta=status.title())
+        st.metric("Agent 5", "Postman Collections", delta=status.title())
     
     # Show final results if all programs completed
     if all(progress[prog]['status'] == 'success' for prog in progress):

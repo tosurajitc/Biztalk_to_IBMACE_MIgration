@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Invalid_Payload_malformed_xml_1",
+    "description": "Invalid payload for testing malformed_xml",
+    "error_type": "malformed_xml",
+    "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>MALFORMED_TEST</MessageID>\n        <!-- Missing closing tag -->\n    <Document>\n        <DocumentType>MALFORMED</DocumentType>\n    </Document>\n    <!-- Missing closing DocumentMessage tag -->"
+  },
+  {
+    "name": "Invalid_Payload_missing_required_fields_2",
+    "description": "Invalid payload for testing missing_required_fields",
+    "error_type": "missing_required_fields",
+    "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <!-- Missing MessageID -->\n    </Header>\n    <Document>\n        <!-- Missing DocumentType -->\n        <EntityReference>\n            <Type></Type> <!-- Empty required field -->\n        </EntityReference>\n    </Document>\n</DocumentMessage>"
+  },
+  {
+    "name": "Invalid_Payload_invalid_data_types_3",
+    "description": "Invalid payload for testing invalid_data_types",
+    "error_type": "invalid_data_types",
+    "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>INVALID_TYPES_TEST</MessageID>\n        <Timestamp>INVALID_DATE_FORMAT</Timestamp>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</Code> <!-- Exceeds maximum length -->\n        </DocumentType>\n        <EntityReference>\n            <Type>INVALID_TYPE</Type>\n            <EntityID>123</EntityID> <!-- Too short -->\n        </EntityReference>\n    </Document>\n</DocumentMessage>"
+  },
+  {
+    "name": "Invalid_Payload_business_rule_violations_4",
+    "description": "Invalid payload for testing business_rule_violations",
+    "error_type": "business_rule_violations",
+    "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>BUSINESS_RULE_VIOLATION_TEST</MessageID>\n        <Timestamp>2020-01-01T00:00:00</Timestamp> <!-- Date in past -->\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>UNKNOWN_CODE</Code> <!-- Invalid business code -->\n        </DocumentType>\n        <EntityReference>\n            <Type>INVALID_ENTITY</Type> <!-- Not in allowed list -->\n            <EntityID>DUPLICATE_ID</EntityID>\n        </EntityReference>\n        <BusinessData>\n            <Status>INVALID_STATUS</Status> <!-- Not in allowed values -->\n        </BusinessData>\n    </Document>\n</DocumentMessage>"
+  }
+]

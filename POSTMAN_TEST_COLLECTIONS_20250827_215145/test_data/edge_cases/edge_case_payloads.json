@@ -1,0 +1,26 @@
+[
+  {
+    "name": "EdgeCase_maximum_length_fields",
+    "description": "Edge case testing for maximum_length_fields",
+    "case_type": "maximum_length_fields",
+    "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>EDGE_CASE_MAX_LENGTH_TEST_0f894ff1</MessageID>\n        <Timestamp>2025-08-27T21:51:46</Timestamp>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</Code>\n            <Name>Maximum length field test with exactly the allowed number of characters here to test boundary conditionsMaximum length field test with exactly the allowed number of characters here to test boundary conditions</Name>\n        </DocumentType>\n        <EntityReference>\n            <Type>SHP</Type>\n            <EntityID>EDGE_CASE_MAXIMUM_LENGTH_ENTITY_ID_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</EntityID>\n        </EntityReference>\n    </Document>\n</DocumentMessage>"
+  },
+  {
+    "name": "EdgeCase_special_characters",
+    "description": "Edge case testing for special_characters",
+    "case_type": "special_characters",
+    "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>SPECIAL_CHARS_TEST_c58e4764</MessageID>\n        <Timestamp>2025-08-27T21:51:46</Timestamp>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>SPECIAL_CHAR_TEST</Code>\n            <Name>Test&lt;&gt;&amp;\"'Special Characters</Name>\n        </DocumentType>\n        <EntityReference>\n            <Type>SHP</Type>\n            <EntityID>SPECIAL_&lt;&gt;&amp;_ENTITY</EntityID>\n        </EntityReference>\n        <BusinessData>\n            <SpecialField>&lt;![CDATA[Special <characters> & \"quotes\" here]]&gt;</SpecialField>\n        </BusinessData>\n    </Document>\n</DocumentMessage>"
+  },
+  {
+    "name": "EdgeCase_unicode_data",
+    "description": "Edge case testing for unicode_data",
+    "case_type": "unicode_data",
+    "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>UNICODE_TEST_6dad5ef3</MessageID>\n        <Timestamp>2025-08-27T21:51:46</Timestamp>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>UNICODE_TEST</Code>\n            <Name>\u6d4b\u8bd5\u6570\u636e Unicode Test \u30c7\u30fc\u30bf \u0442\u0435\u0441\u0442 \u0434\u0430\u043d\u043d\u044b\u0435</Name>\n        </DocumentType>\n        <EntityReference>\n            <Type>SHP</Type>\n            <EntityID>UNICODE_\u6d4b\u8bd5_\u30c7\u30fc\u30bf_\u0442\u0435\u0441\u0442</EntityID>\n        </EntityReference>\n        <BusinessData>\n            <MultiLanguageField>English fran\u00e7ais \u4e2d\u6587 \u65e5\u672c\u8a9e \u0440\u0443\u0441\u0441\u043a\u0438\u0439 \u0627\u0644\u0639\u0631\u0628\u064a\u0629 \ud83d\ude80</MultiLanguageField>\n            <EmojiField>\ud83d\udce6\ud83d\udccb\u2705\u274c\ud83d\udd04\ud83c\udf0d</EmojiField>\n        </BusinessData>\n    </Document>\n</DocumentMessage>"
+  },
+  {
+    "name": "EdgeCase_empty_optional_fields",
+    "description": "Edge case testing for empty_optional_fields",
+    "case_type": "empty_optional_fields",
+    "payload": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>EMPTY_FIELDS_TEST_6e345667</MessageID>\n        <Timestamp>2025-08-27T21:51:46</Timestamp>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>EMPTY_OPTIONAL_TEST</Code>\n            <Name>Empty Optional Fields Test</Name>\n        </DocumentType>\n        <EntityReference>\n            <Type>SHP</Type>\n            <EntityID>EMPTY_OPTIONAL_ENTITY</EntityID>\n            <Reference Type=\"OptionalRef\"></Reference>\n        </EntityReference>\n        <BusinessData>\n            <OptionalField1></OptionalField1>\n            <OptionalField2/>\n            <RequiredField>REQUIRED_VALUE</RequiredField>\n        </BusinessData>\n    </Document>\n</DocumentMessage>"
+  }
+]

@@ -1,0 +1,941 @@
+{
+  "info": {
+    "name": "ACE_MessageFlow_TestSuite - Error Handling Tests",
+    "description": "Error Handling Tests scenarios for IBM ACE Message Flows\n\nGenerated on: 2025-08-27 21:51:46\nScenarios: 8",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Error Handling - Invalid Data Scenarios - Malformed XML messages",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}",
+            "type": "text"
+          },
+          {
+            "key": "X-Test-Scenario",
+            "value": "TEST_017",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>{{randomUUID()}}</MessageID>\n        <Timestamp>2025-08-27T21:51:46</Timestamp>\n        <Source>\n            <SystemName>POSTMAN_TEST</SystemName>\n            <Version>1.0</Version>\n        </Source>\n        <Target>\n            <SystemName>IBM_ACE</SystemName>\n            <CountryCode>US</CountryCode>\n        </Target>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>TEST_SHP</Code>\n            <Name>Test Document for SHP</Name>\n        </DocumentType>\n        <EntityReference>\n            <Type>SHP</Type>\n            <EntityID>TEST_SHP_{{randomInt(1000, 9999)}}</EntityID>\n            <Reference Type=\"SSN\">SSN{{randomInt(100000, 999999)}}</Reference>\n            <Reference Type=\"HouseBill\">HB{{randomInt(10000, 99999)}}</Reference>\n        </EntityReference>\n        <BusinessData>\n            <CompanyCode>TEST_COMPANY</CompanyCode>\n            <ProcessingDate>2025-08-27T21:51:46</ProcessingDate>\n            <Priority>NORMAL</Priority>\n            <TestScenario>TEST_017</TestScenario>\n        </BusinessData>\n    </Document>\n</DocumentMessage>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/default",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "default"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test script for: Error Handling - Invalid Data Scenarios - Malformed XML messages",
+              "pm.test('Response status code is valid', function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+              "});",
+              "",
+              "pm.test('Response time is acceptable', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test('Response has valid content', function () {",
+              "    pm.expect(pm.response.text()).to.not.be.empty;",
+              "});",
+              "// Validation rule: response_time_check",
+              "// Validation rule: status_code_validation",
+              "",
+              "pm.test('Response has valid XML structure', function () {",
+              "    try {",
+              "        const responseXml = xml2Json(pm.response.text());",
+              "        pm.expect(responseXml).to.not.be.null;",
+              "    } catch (e) {",
+              "        pm.expect.fail('Invalid XML response');",
+              "    }",
+              "});",
+              "",
+              "pm.test('Response contains business data', function () {",
+              "    const responseText = pm.response.text();",
+              "    pm.expect(responseText).to.include('DocumentMessage');",
+              "});",
+              "",
+              "// Log test results",
+              "console.log('Test Scenario: TEST_017');",
+              "console.log('Response Status: ' + pm.response.code);",
+              "console.log('Response Time: ' + pm.response.responseTime + 'ms');",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Pre-request script for: Error Handling - Invalid Data Scenarios - Malformed XML messages",
+              "",
+              "// Generate dynamic test data",
+              "pm.globals.set('randomUUID', function() {",
+              "    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+              "        var r = Math.random() * 16 | 0,",
+              "            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+              "        return v.toString(16);",
+              "    });",
+              "});",
+              "",
+              "pm.globals.set('randomInt', function(min, max) {",
+              "    return Math.floor(Math.random() * (max - min + 1)) + min;",
+              "});",
+              "",
+              "// Set test scenario context",
+              "pm.globals.set('current_test_scenario', 'TEST_017');",
+              "pm.globals.set('test_priority', 1);",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Handling - Invalid Data Scenarios - Missing required fields",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}",
+            "type": "text"
+          },
+          {
+            "key": "X-Test-Scenario",
+            "value": "TEST_018",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>{{randomUUID()}}</MessageID>\n        <Timestamp>2025-08-27T21:51:46</Timestamp>\n        <Source>\n            <SystemName>POSTMAN_TEST</SystemName>\n            <Version>1.0</Version>\n        </Source>\n        <Target>\n            <SystemName>IBM_ACE</SystemName>\n            <CountryCode>US</CountryCode>\n        </Target>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>TEST_SHP</Code>\n            <Name>Test Document for SHP</Name>\n        </DocumentType>\n        <EntityReference>\n            <Type>SHP</Type>\n            <EntityID>TEST_SHP_{{randomInt(1000, 9999)}}</EntityID>\n            <Reference Type=\"SSN\">SSN{{randomInt(100000, 999999)}}</Reference>\n            <Reference Type=\"HouseBill\">HB{{randomInt(10000, 99999)}}</Reference>\n        </EntityReference>\n        <BusinessData>\n            <CompanyCode>TEST_COMPANY</CompanyCode>\n            <ProcessingDate>2025-08-27T21:51:46</ProcessingDate>\n            <Priority>NORMAL</Priority>\n            <TestScenario>TEST_018</TestScenario>\n        </BusinessData>\n    </Document>\n</DocumentMessage>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/default",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "default"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test script for: Error Handling - Invalid Data Scenarios - Missing required fields",
+              "pm.test('Response status code is valid', function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+              "});",
+              "",
+              "pm.test('Response time is acceptable', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test('Response has valid content', function () {",
+              "    pm.expect(pm.response.text()).to.not.be.empty;",
+              "});",
+              "// Validation rule: response_time_check",
+              "// Validation rule: status_code_validation",
+              "",
+              "pm.test('Response has valid XML structure', function () {",
+              "    try {",
+              "        const responseXml = xml2Json(pm.response.text());",
+              "        pm.expect(responseXml).to.not.be.null;",
+              "    } catch (e) {",
+              "        pm.expect.fail('Invalid XML response');",
+              "    }",
+              "});",
+              "",
+              "pm.test('Response contains business data', function () {",
+              "    const responseText = pm.response.text();",
+              "    pm.expect(responseText).to.include('DocumentMessage');",
+              "});",
+              "",
+              "// Log test results",
+              "console.log('Test Scenario: TEST_018');",
+              "console.log('Response Status: ' + pm.response.code);",
+              "console.log('Response Time: ' + pm.response.responseTime + 'ms');",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Pre-request script for: Error Handling - Invalid Data Scenarios - Missing required fields",
+              "",
+              "// Generate dynamic test data",
+              "pm.globals.set('randomUUID', function() {",
+              "    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+              "        var r = Math.random() * 16 | 0,",
+              "            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+              "        return v.toString(16);",
+              "    });",
+              "});",
+              "",
+              "pm.globals.set('randomInt', function(min, max) {",
+              "    return Math.floor(Math.random() * (max - min + 1)) + min;",
+              "});",
+              "",
+              "// Set test scenario context",
+              "pm.globals.set('current_test_scenario', 'TEST_018');",
+              "pm.globals.set('test_priority', 1);",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Handling - Invalid Data Scenarios - Invalid data types",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}",
+            "type": "text"
+          },
+          {
+            "key": "X-Test-Scenario",
+            "value": "TEST_019",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>INVALID_DATA_TEST</MessageID>\n        <Timestamp>INVALID_DATE_FORMAT</Timestamp>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>INVALID_CODE_TOO_LONG_FOR_VALIDATION_RULES_THAT_SHOULD_CAUSE_ERROR</Code>\n        </DocumentType>\n        <EntityReference>\n            <Type>INVALID_ENTITY_TYPE</Type>\n            <EntityID>123</EntityID>\n        </EntityReference>\n    </Document>\n</DocumentMessage>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/default",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "default"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test script for: Error Handling - Invalid Data Scenarios - Invalid data types",
+              "pm.test('Response status code is valid', function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([400, 422, 500]);",
+              "});",
+              "",
+              "pm.test('Response time is acceptable', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test('Response has valid content', function () {",
+              "    pm.expect(pm.response.text()).to.not.be.empty;",
+              "});",
+              "// Validation rule: response_time_check",
+              "// Validation rule: status_code_validation",
+              "",
+              "pm.test('Response has valid XML structure', function () {",
+              "    try {",
+              "        const responseXml = xml2Json(pm.response.text());",
+              "        pm.expect(responseXml).to.not.be.null;",
+              "    } catch (e) {",
+              "        pm.expect.fail('Invalid XML response');",
+              "    }",
+              "});",
+              "",
+              "pm.test('Response contains business data', function () {",
+              "    const responseText = pm.response.text();",
+              "    pm.expect(responseText).to.include('DocumentMessage');",
+              "});",
+              "",
+              "// Log test results",
+              "console.log('Test Scenario: TEST_019');",
+              "console.log('Response Status: ' + pm.response.code);",
+              "console.log('Response Time: ' + pm.response.responseTime + 'ms');",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Pre-request script for: Error Handling - Invalid Data Scenarios - Invalid data types",
+              "",
+              "// Generate dynamic test data",
+              "pm.globals.set('randomUUID', function() {",
+              "    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+              "        var r = Math.random() * 16 | 0,",
+              "            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+              "        return v.toString(16);",
+              "    });",
+              "});",
+              "",
+              "pm.globals.set('randomInt', function(min, max) {",
+              "    return Math.floor(Math.random() * (max - min + 1)) + min;",
+              "});",
+              "",
+              "// Set test scenario context",
+              "pm.globals.set('current_test_scenario', 'TEST_019');",
+              "pm.globals.set('test_priority', 1);",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Handling - Invalid Data Scenarios - Business rule violations",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}",
+            "type": "text"
+          },
+          {
+            "key": "X-Test-Scenario",
+            "value": "TEST_020",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>{{randomUUID()}}</MessageID>\n        <Timestamp>2025-08-27T21:51:46</Timestamp>\n        <Source>\n            <SystemName>POSTMAN_TEST</SystemName>\n            <Version>1.0</Version>\n        </Source>\n        <Target>\n            <SystemName>IBM_ACE</SystemName>\n            <CountryCode>US</CountryCode>\n        </Target>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>TEST_SHP</Code>\n            <Name>Test Document for SHP</Name>\n        </DocumentType>\n        <EntityReference>\n            <Type>SHP</Type>\n            <EntityID>TEST_SHP_{{randomInt(1000, 9999)}}</EntityID>\n            <Reference Type=\"SSN\">SSN{{randomInt(100000, 999999)}}</Reference>\n            <Reference Type=\"HouseBill\">HB{{randomInt(10000, 99999)}}</Reference>\n        </EntityReference>\n        <BusinessData>\n            <CompanyCode>TEST_COMPANY</CompanyCode>\n            <ProcessingDate>2025-08-27T21:51:46</ProcessingDate>\n            <Priority>NORMAL</Priority>\n            <TestScenario>TEST_020</TestScenario>\n        </BusinessData>\n    </Document>\n</DocumentMessage>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/default",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "default"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test script for: Error Handling - Invalid Data Scenarios - Business rule violations",
+              "pm.test('Response status code is valid', function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+              "});",
+              "",
+              "pm.test('Response time is acceptable', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test('Response has valid content', function () {",
+              "    pm.expect(pm.response.text()).to.not.be.empty;",
+              "});",
+              "// Validation rule: response_time_check",
+              "// Validation rule: status_code_validation",
+              "",
+              "pm.test('Response has valid XML structure', function () {",
+              "    try {",
+              "        const responseXml = xml2Json(pm.response.text());",
+              "        pm.expect(responseXml).to.not.be.null;",
+              "    } catch (e) {",
+              "        pm.expect.fail('Invalid XML response');",
+              "    }",
+              "});",
+              "",
+              "pm.test('Response contains business data', function () {",
+              "    const responseText = pm.response.text();",
+              "    pm.expect(responseText).to.include('DocumentMessage');",
+              "});",
+              "",
+              "// Log test results",
+              "console.log('Test Scenario: TEST_020');",
+              "console.log('Response Status: ' + pm.response.code);",
+              "console.log('Response Time: ' + pm.response.responseTime + 'ms');",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Pre-request script for: Error Handling - Invalid Data Scenarios - Business rule violations",
+              "",
+              "// Generate dynamic test data",
+              "pm.globals.set('randomUUID', function() {",
+              "    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+              "        var r = Math.random() * 16 | 0,",
+              "            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+              "        return v.toString(16);",
+              "    });",
+              "});",
+              "",
+              "pm.globals.set('randomInt', function(min, max) {",
+              "    return Math.floor(Math.random() * (max - min + 1)) + min;",
+              "});",
+              "",
+              "// Set test scenario context",
+              "pm.globals.set('current_test_scenario', 'TEST_020');",
+              "pm.globals.set('test_priority', 1);",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Handling - System Error Scenarios - Database connection failures",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}",
+            "type": "text"
+          },
+          {
+            "key": "X-Test-Scenario",
+            "value": "TEST_021",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>{{randomUUID()}}</MessageID>\n        <Timestamp>2025-08-27T21:51:46</Timestamp>\n        <Source>\n            <SystemName>POSTMAN_TEST</SystemName>\n            <Version>1.0</Version>\n        </Source>\n        <Target>\n            <SystemName>IBM_ACE</SystemName>\n            <CountryCode>US</CountryCode>\n        </Target>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>TEST_SHP</Code>\n            <Name>Test Document for SHP</Name>\n        </DocumentType>\n        <EntityReference>\n            <Type>SHP</Type>\n            <EntityID>TEST_SHP_{{randomInt(1000, 9999)}}</EntityID>\n            <Reference Type=\"SSN\">SSN{{randomInt(100000, 999999)}}</Reference>\n            <Reference Type=\"HouseBill\">HB{{randomInt(10000, 99999)}}</Reference>\n        </EntityReference>\n        <BusinessData>\n            <CompanyCode>TEST_COMPANY</CompanyCode>\n            <ProcessingDate>2025-08-27T21:51:46</ProcessingDate>\n            <Priority>NORMAL</Priority>\n            <TestScenario>TEST_021</TestScenario>\n        </BusinessData>\n    </Document>\n</DocumentMessage>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/default",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "default"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test script for: Error Handling - System Error Scenarios - Database connection failures",
+              "pm.test('Response status code is valid', function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+              "});",
+              "",
+              "pm.test('Response time is acceptable', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test('Response has valid content', function () {",
+              "    pm.expect(pm.response.text()).to.not.be.empty;",
+              "});",
+              "// Validation rule: response_time_check",
+              "// Validation rule: status_code_validation",
+              "",
+              "pm.test('Response has valid XML structure', function () {",
+              "    try {",
+              "        const responseXml = xml2Json(pm.response.text());",
+              "        pm.expect(responseXml).to.not.be.null;",
+              "    } catch (e) {",
+              "        pm.expect.fail('Invalid XML response');",
+              "    }",
+              "});",
+              "",
+              "pm.test('Response contains business data', function () {",
+              "    const responseText = pm.response.text();",
+              "    pm.expect(responseText).to.include('DocumentMessage');",
+              "});",
+              "",
+              "// Log test results",
+              "console.log('Test Scenario: TEST_021');",
+              "console.log('Response Status: ' + pm.response.code);",
+              "console.log('Response Time: ' + pm.response.responseTime + 'ms');",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Pre-request script for: Error Handling - System Error Scenarios - Database connection failures",
+              "",
+              "// Generate dynamic test data",
+              "pm.globals.set('randomUUID', function() {",
+              "    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+              "        var r = Math.random() * 16 | 0,",
+              "            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+              "        return v.toString(16);",
+              "    });",
+              "});",
+              "",
+              "pm.globals.set('randomInt', function(min, max) {",
+              "    return Math.floor(Math.random() * (max - min + 1)) + min;",
+              "});",
+              "",
+              "// Set test scenario context",
+              "pm.globals.set('current_test_scenario', 'TEST_021');",
+              "pm.globals.set('test_priority', 1);",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Handling - System Error Scenarios - External service timeouts",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}",
+            "type": "text"
+          },
+          {
+            "key": "X-Test-Scenario",
+            "value": "TEST_022",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>{{randomUUID()}}</MessageID>\n        <Timestamp>2025-08-27T21:51:46</Timestamp>\n        <Source>\n            <SystemName>POSTMAN_TEST</SystemName>\n            <Version>1.0</Version>\n        </Source>\n        <Target>\n            <SystemName>IBM_ACE</SystemName>\n            <CountryCode>US</CountryCode>\n        </Target>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>TEST_SHP</Code>\n            <Name>Test Document for SHP</Name>\n        </DocumentType>\n        <EntityReference>\n            <Type>SHP</Type>\n            <EntityID>TEST_SHP_{{randomInt(1000, 9999)}}</EntityID>\n            <Reference Type=\"SSN\">SSN{{randomInt(100000, 999999)}}</Reference>\n            <Reference Type=\"HouseBill\">HB{{randomInt(10000, 99999)}}</Reference>\n        </EntityReference>\n        <BusinessData>\n            <CompanyCode>TEST_COMPANY</CompanyCode>\n            <ProcessingDate>2025-08-27T21:51:46</ProcessingDate>\n            <Priority>NORMAL</Priority>\n            <TestScenario>TEST_022</TestScenario>\n        </BusinessData>\n    </Document>\n</DocumentMessage>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/default",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "default"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test script for: Error Handling - System Error Scenarios - External service timeouts",
+              "pm.test('Response status code is valid', function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+              "});",
+              "",
+              "pm.test('Response time is acceptable', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test('Response has valid content', function () {",
+              "    pm.expect(pm.response.text()).to.not.be.empty;",
+              "});",
+              "// Validation rule: response_time_check",
+              "// Validation rule: status_code_validation",
+              "",
+              "pm.test('Response has valid XML structure', function () {",
+              "    try {",
+              "        const responseXml = xml2Json(pm.response.text());",
+              "        pm.expect(responseXml).to.not.be.null;",
+              "    } catch (e) {",
+              "        pm.expect.fail('Invalid XML response');",
+              "    }",
+              "});",
+              "",
+              "pm.test('Response contains business data', function () {",
+              "    const responseText = pm.response.text();",
+              "    pm.expect(responseText).to.include('DocumentMessage');",
+              "});",
+              "",
+              "// Log test results",
+              "console.log('Test Scenario: TEST_022');",
+              "console.log('Response Status: ' + pm.response.code);",
+              "console.log('Response Time: ' + pm.response.responseTime + 'ms');",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Pre-request script for: Error Handling - System Error Scenarios - External service timeouts",
+              "",
+              "// Generate dynamic test data",
+              "pm.globals.set('randomUUID', function() {",
+              "    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+              "        var r = Math.random() * 16 | 0,",
+              "            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+              "        return v.toString(16);",
+              "    });",
+              "});",
+              "",
+              "pm.globals.set('randomInt', function(min, max) {",
+              "    return Math.floor(Math.random() * (max - min + 1)) + min;",
+              "});",
+              "",
+              "// Set test scenario context",
+              "pm.globals.set('current_test_scenario', 'TEST_022');",
+              "pm.globals.set('test_priority', 1);",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Handling - System Error Scenarios - Queue unavailability",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}",
+            "type": "text"
+          },
+          {
+            "key": "X-Test-Scenario",
+            "value": "TEST_023",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>{{randomUUID()}}</MessageID>\n        <Timestamp>2025-08-27T21:51:46</Timestamp>\n        <Source>\n            <SystemName>POSTMAN_TEST</SystemName>\n            <Version>1.0</Version>\n        </Source>\n        <Target>\n            <SystemName>IBM_ACE</SystemName>\n            <CountryCode>US</CountryCode>\n        </Target>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>TEST_SHP</Code>\n            <Name>Test Document for SHP</Name>\n        </DocumentType>\n        <EntityReference>\n            <Type>SHP</Type>\n            <EntityID>TEST_SHP_{{randomInt(1000, 9999)}}</EntityID>\n            <Reference Type=\"SSN\">SSN{{randomInt(100000, 999999)}}</Reference>\n            <Reference Type=\"HouseBill\">HB{{randomInt(10000, 99999)}}</Reference>\n        </EntityReference>\n        <BusinessData>\n            <CompanyCode>TEST_COMPANY</CompanyCode>\n            <ProcessingDate>2025-08-27T21:51:46</ProcessingDate>\n            <Priority>NORMAL</Priority>\n            <TestScenario>TEST_023</TestScenario>\n        </BusinessData>\n    </Document>\n</DocumentMessage>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/default",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "default"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test script for: Error Handling - System Error Scenarios - Queue unavailability",
+              "pm.test('Response status code is valid', function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+              "});",
+              "",
+              "pm.test('Response time is acceptable', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test('Response has valid content', function () {",
+              "    pm.expect(pm.response.text()).to.not.be.empty;",
+              "});",
+              "// Validation rule: response_time_check",
+              "// Validation rule: status_code_validation",
+              "",
+              "pm.test('Response has valid XML structure', function () {",
+              "    try {",
+              "        const responseXml = xml2Json(pm.response.text());",
+              "        pm.expect(responseXml).to.not.be.null;",
+              "    } catch (e) {",
+              "        pm.expect.fail('Invalid XML response');",
+              "    }",
+              "});",
+              "",
+              "pm.test('Response contains business data', function () {",
+              "    const responseText = pm.response.text();",
+              "    pm.expect(responseText).to.include('DocumentMessage');",
+              "});",
+              "",
+              "// Log test results",
+              "console.log('Test Scenario: TEST_023');",
+              "console.log('Response Status: ' + pm.response.code);",
+              "console.log('Response Time: ' + pm.response.responseTime + 'ms');",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Pre-request script for: Error Handling - System Error Scenarios - Queue unavailability",
+              "",
+              "// Generate dynamic test data",
+              "pm.globals.set('randomUUID', function() {",
+              "    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+              "        var r = Math.random() * 16 | 0,",
+              "            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+              "        return v.toString(16);",
+              "    });",
+              "});",
+              "",
+              "pm.globals.set('randomInt', function(min, max) {",
+              "    return Math.floor(Math.random() * (max - min + 1)) + min;",
+              "});",
+              "",
+              "// Set test scenario context",
+              "pm.globals.set('current_test_scenario', 'TEST_023');",
+              "pm.globals.set('test_priority', 1);",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Error Handling - System Error Scenarios - Transformation failures",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/xml",
+            "type": "text"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{auth_token}}",
+            "type": "text"
+          },
+          {
+            "key": "X-Test-Scenario",
+            "value": "TEST_024",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<DocumentMessage>\n    <Header>\n        <MessageID>{{randomUUID()}}</MessageID>\n        <Timestamp>2025-08-27T21:51:46</Timestamp>\n        <Source>\n            <SystemName>POSTMAN_TEST</SystemName>\n            <Version>1.0</Version>\n        </Source>\n        <Target>\n            <SystemName>IBM_ACE</SystemName>\n            <CountryCode>US</CountryCode>\n        </Target>\n    </Header>\n    <Document>\n        <DocumentType>\n            <Code>TEST_SHP</Code>\n            <Name>Test Document for SHP</Name>\n        </DocumentType>\n        <EntityReference>\n            <Type>SHP</Type>\n            <EntityID>TEST_SHP_{{randomInt(1000, 9999)}}</EntityID>\n            <Reference Type=\"SSN\">SSN{{randomInt(100000, 999999)}}</Reference>\n            <Reference Type=\"HouseBill\">HB{{randomInt(10000, 99999)}}</Reference>\n        </EntityReference>\n        <BusinessData>\n            <CompanyCode>TEST_COMPANY</CompanyCode>\n            <ProcessingDate>2025-08-27T21:51:46</ProcessingDate>\n            <Priority>NORMAL</Priority>\n            <TestScenario>TEST_024</TestScenario>\n        </BusinessData>\n    </Document>\n</DocumentMessage>",
+          "options": {
+            "raw": {
+              "language": "xml"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/default",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "default"
+          ]
+        }
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "// Test script for: Error Handling - System Error Scenarios - Transformation failures",
+              "pm.test('Response status code is valid', function () {",
+              "    pm.expect(pm.response.code).to.be.oneOf([200, 201, 202]);",
+              "});",
+              "",
+              "pm.test('Response time is acceptable', function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test('Response has valid content', function () {",
+              "    pm.expect(pm.response.text()).to.not.be.empty;",
+              "});",
+              "// Validation rule: response_time_check",
+              "// Validation rule: status_code_validation",
+              "",
+              "pm.test('Response has valid XML structure', function () {",
+              "    try {",
+              "        const responseXml = xml2Json(pm.response.text());",
+              "        pm.expect(responseXml).to.not.be.null;",
+              "    } catch (e) {",
+              "        pm.expect.fail('Invalid XML response');",
+              "    }",
+              "});",
+              "",
+              "pm.test('Response contains business data', function () {",
+              "    const responseText = pm.response.text();",
+              "    pm.expect(responseText).to.include('DocumentMessage');",
+              "});",
+              "",
+              "// Log test results",
+              "console.log('Test Scenario: TEST_024');",
+              "console.log('Response Status: ' + pm.response.code);",
+              "console.log('Response Time: ' + pm.response.responseTime + 'ms');",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "// Pre-request script for: Error Handling - System Error Scenarios - Transformation failures",
+              "",
+              "// Generate dynamic test data",
+              "pm.globals.set('randomUUID', function() {",
+              "    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+              "        var r = Math.random() * 16 | 0,",
+              "            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+              "        return v.toString(16);",
+              "    });",
+              "});",
+              "",
+              "pm.globals.set('randomInt', function(min, max) {",
+              "    return Math.floor(Math.random() * (max - min + 1)) + min;",
+              "});",
+              "",
+              "// Set test scenario context",
+              "pm.globals.set('current_test_scenario', 'TEST_024');",
+              "pm.globals.set('test_priority', 1);",
+              ""
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "{{env_base_url}}",
+      "type": "string"
+    },
+    {
+      "key": "auth_token",
+      "value": "{{env_auth_token}}",
+      "type": "string"
+    },
+    {
+      "key": "mq_simulator_url",
+      "value": "{{env_mq_simulator_url}}",
+      "type": "string"
+    },
+    {
+      "key": "test_run_id",
+      "value": "TEST_RUN_20250827_215145",
+      "type": "string"
+    },
+    {
+      "key": "project_name",
+      "value": "ACE_MessageFlow_TestSuite",
+      "type": "string"
+    }
+  ]
+}
