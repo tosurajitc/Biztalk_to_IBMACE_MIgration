@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" 
+    xmlns:xmi="http://www.omg.org/XMI" 
+    xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode"
+    xmlns:ComIbmMQInput.msgnode="ComIbmMQInput.msgnode" 
+    xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode"
+    xmlns:ComIbmWSRequest.msgnode="ComIbmWSRequest.msgnode"
+    xmlns:ComIbmXslMqsi.msgnode="ComIbmXslMqsi.msgnode"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" 
+    xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" 
+    xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" 
+    nsURI="{FLOW_NAME}.msgflow" 
+    nsPrefix="{FLOW_NAME}.msgflow">
+    
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1" nodeLayoutStyle="RECTANGLE">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    
+    <translation xmi:type="utility:TranslatableString" key="{FLOW_NAME}" bundleName="{FLOW_NAME}" pluginId="{PROJECT_NAME}"/>
+    
+    <!-- MANDATORY: Color Graphics -->
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/{PROJECT_NAME}/icons/full/obj16/{FLOW_NAME}.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/{PROJECT_NAME}/icons/full/obj30/{FLOW_NAME}.gif"/>
+    
+    <composition>
+      <!-- Input Node -->
+      <nodes xmi:type="ComIbmMQInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_1" location="150,200" 
+          queueName="{INPUT_QUEUE}" messageDomain="XMLNSC">
+        <translation xmi:type="utility:ConstantString" string="MQ Input"/>
+      </nodes>
+      
+      <!-- Processing Nodes -->
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_2" location="350,200" 
+          computeExpression="esql://routine/#{MODULE_NAME}.Main">
+        <translation xmi:type="utility:ConstantString" string="Database Enrichment"/>
+      </nodes>
+      
+      <!-- XSL Transform Node -->
+      <nodes xmi:type="ComIbmXslMqsi.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_3" location="550,200" 
+          stylesheetName="{STYLESHEET_NAME}" messageDomainProperty="XMLNSC">
+        <translation xmi:type="utility:ConstantString" string="XSL Transform"/>
+      </nodes>
+      
+      <!-- HTTP Service Node (CORRECTED) -->
+      <nodes xmi:type="ComIbmWSRequest.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_4" location="750,200" 
+          URLSpecifier="{SERVICE_URL}">
+        <translation xmi:type="utility:ConstantString" string="HTTP Request"/>
+      </nodes>
+      
+      <!-- Success Handler -->
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_5" location="950,200" 
+          computeExpression="esql://routine/#{PROJECT}_SuccessHandler.Main">
+        <translation xmi:type="utility:ConstantString" string="Success Handler"/>
+      </nodes>
+      
+      <!-- Error Handler -->
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_6" location="550,350" 
+          computeExpression="esql://routine/#{PROJECT}_ErrorHandler.Main">
+        <translation xmi:type="utility:ConstantString" string="Error Handler"/>
+      </nodes>
+      
+      <!-- Error Queue -->
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_7" location="750,350" 
+          queueName="{ERROR_QUEUE}">
+        <translation xmi:type="utility:ConstantString" string="Error Queue"/>
+      </nodes>
+      
+      <!-- Main Flow Connections -->
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_1" 
+          targetNode="FCMComposite_1_2" sourceNode="FCMComposite_1_1" 
+          sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+          
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_2" 
+          targetNode="FCMComposite_1_3" sourceNode="FCMComposite_1_2" 
+          sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+          
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_3" 
+          targetNode="FCMComposite_1_4" sourceNode="FCMComposite_1_3" 
+          sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+          
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_4" 
+          targetNode="FCMComposite_1_5" sourceNode="FCMComposite_1_4" 
+          sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      
+      <!-- Error Connections -->
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_ERROR_1" 
+          targetNode="FCMComposite_1_6" sourceNode="FCMComposite_1_1" 
+          sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.in"/>
+          
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_ERROR_2" 
+          targetNode="FCMComposite_1_7" sourceNode="FCMComposite_1_6" 
+          sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+    </composition>
+    
+    <!-- MANDATORY: Property Organizer -->
+    <propertyOrganizer/>
+    
+    <!-- MANDATORY: Sticky Board -->
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

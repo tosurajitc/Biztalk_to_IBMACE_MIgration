@@ -1,0 +1,27 @@
+cd "C:\@Official\@Gen AI\DSV\BizTalk\Analyze_this_folder\GENAI_EPIS_CW1_IN_Document_App"
+C:\Users\SURAJITCHATTERJEE\AppData\Local\Programs\Python\Python312\python.exe -m venv migration_env
+migration_env\Scripts\activate
+
+Activate virtual environment: .venv\scripts\activate
+How to activate .env file: pip install python-dotenv 
+Run the requirement.txt file: pip install -r requirements.txt
+create requirement.txt file: pip freeze > requirements.txt
+to run the program : streamlit run main.py
+
+
+C:\Users\SURAJITCHATTERJEE\AppData\Local\Programs\Python\Python312\python.exe clean_ace_generator.py
+
+
+
+GIT PUSH Steps: 
+In the terminal, initialize a new Git repository: git init
+Add all files in your folder to the staging area: git add .
+Commit the files with a message: git commit -m "Initial commit"
+Link your local repository to the GitHub repository you mentioned: git remote add origin https://github.com/tosurajitc/Kraft_Henz_Poc.git
+
+if error: remote origin already exists. - then git remote -v and then git remote rename origin old-origin and after that retry previous step.
+Push the changes to the remote repository: git push -u origin master
+
+https://tosurajitc-kraft-henz-poc-app-ku9p2z.streamlit.app/
+
+Project Structure: To run the program from bash: python cd src and then streamlit run app.py 
