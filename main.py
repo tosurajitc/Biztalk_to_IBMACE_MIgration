@@ -69,7 +69,7 @@ def main():
         progress = st.session_state.pipeline_progress
         
         st.write("**Agent 1**: BizTalk Mapper", get_status_icon(progress['program_1']['status']))
-        st.write("**Agent 2**: ACE Migration", get_status_icon(progress['program_2']['status']))
+        st.write("**Agent 2**: ACE Mesageflow", get_status_icon(progress['program_2']['status']))
         st.write("**Agent 3**: ACE Modules", get_status_icon(progress['program_3']['status']))
         st.write("**Agent 4**: Quality Review", get_status_icon(progress['program_4']['status']))
         st.write("**Agent 5**: Postman Collection", get_status_icon(progress['program_5']['status']))  # NEW LINE ONLY

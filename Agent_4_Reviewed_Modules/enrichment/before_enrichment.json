@@ -1,6 +1,0 @@
-{
-  "timestamp": "2025-08-27T21:48:38.270559",
-  "stage": "before_enrichment",
-  "review_type": "pure_llm_driven",
-  "modules_processed": "all_ace_modules"
-}

@@ -344,27 +344,76 @@ class MigrationQualityReviewer:
                 )
             else:
                 prompt = f"""
-Review this ESQL file for ACE toolkit compliance and standards:
+            You are an expert IBM ACE ESQL developer. Review and clean this ESQL file for production deployment.
 
-File: {esql_file['name']}
-Content:
-{content}
+            **CRITICAL FORMATTING REQUIREMENTS:**
+            - The "cleaned_code" field MUST contain ONLY pure ESQL code
+            - NO explanatory text, comments, or descriptions in cleaned_code
+            - NO markdown formatting (```) in cleaned_code
+            - NO introductory phrases like "Here is the generated ESQL..."
+            - NO concluding remarks like "This ESQL module adheres to..."
+            - Start ONLY with CREATE (COMPUTE|PROCEDURE|FUNCTION|MODULE)
+            - End ONLY with END MODULE; 
 
-Please analyze and provide:
-1. Remove unnecessary comments from top and bottom
-2. Check for syntax errors
-3. Verify ACE best practices
-4. Suggest improvements
-5. Return cleaned ESQL code
+            **File Information:**
+            - Name: {esql_file['name']}
+            - Size: {len(content)} characters
 
-Respond with JSON format:
-{{
-    "compliance_score": 1-10,
-    "issues_found": ["list of issues"],
-    "cleaned_code": "cleaned ESQL content",
-    "recommendations": ["list of recommendations"]
-}}
-"""
+            **Original ESQL Content:**
+            ```
+            {content}
+            ```
+
+            **Analysis Requirements:**
+            1. **Remove Unwanted Content**: Strip any LLM-generated explanations, markdown, or comments
+            2. **Syntax Validation**: Check for ESQL syntax errors and correct them
+            3. **ACE Best Practices**: Ensure compliance with IBM ACE standards
+            4. **Code Optimization**: Improve structure, error handling, and performance
+            5. **Production Readiness**: Ensure code is ready for deployment
+
+            **Output Format - STRICT JSON:**
+            {{
+                "compliance_score": <integer 1-10>,
+                "issues_found": [
+                    "List specific issues found in the code",
+                    "Include syntax errors, standard violations, etc."
+                ],
+                "cleaned_code": "<PURE ESQL CODE ONLY - NO EXPLANATIONS>",
+                "recommendations": [
+                    "List actionable improvements",
+                    "Include performance optimizations",
+                    "Suggest best practice implementations"
+                ],
+                "changes_made": [
+                    "List specific changes applied to the code",
+                    "Document what was cleaned or fixed"
+                ]
+            }}
+
+            **Example of CORRECT cleaned_code format:**
+            ```
+            CREATE COMPUTE MODULE MyModule_Compute
+                CREATE FUNCTION Main() RETURNS BOOLEAN
+                BEGIN
+                    SET OutputRoot = InputRoot;
+                    RETURN TRUE;
+                END;
+            END MODULE;
+            ```
+
+            **Example of INCORRECT cleaned_code (DO NOT DO THIS):**
+            ```
+            Here is the cleaned ESQL module:
+
+            CREATE COMPUTE MODULE MyModule_Compute
+                -- Implementation here
+            END MODULE;
+
+            This code follows ACE best practices...
+            ```
+
+            IMPORTANT: Ensure the cleaned_code contains executable ESQL that can be directly saved as a .esql file.
+            """
             
             response = self.llm_client.chat.completions.create(
                 model="llama3-70b-8192",
